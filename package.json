@@ -1,0 +1,19 @@
+{
+  "name": "dongtube",
+  "version": "1.0.0",
+  "description": "Clonning Youtube with vanilla JS and Node JS",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kyedonghwan/DongTube.git"
+  },
+  "author": "Kyedonghwan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kyedonghwan/DongTube/issues"
+  },
+  "homepage": "https://github.com/Kyedonghwan/DongTube#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
