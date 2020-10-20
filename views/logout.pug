@@ -1,4 +1,7 @@
 extends layouts/main.pug
 
 block content 
-    p Hello
+    p 정말 로그아웃 하시겠습니까 ?
+    a(href=routes.home)
+        button.logout-button 로그아웃하기
+    
