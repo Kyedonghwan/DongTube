@@ -13,6 +13,8 @@ const app = express();
 
 app.set('view engine', "pug");
 //원하는 만큼 middleware를 선언 middelware 처리 후, route로 
+app.use("/uploads", express.static("uploads"));
+//upload라는 directory로 감 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
