@@ -13,9 +13,16 @@ export const home = async (req, res) => {
     }
 };
 
-export const search = (req, res) => {
+export const search = async (req, res) => {
     const { query: { term: searchingBy } } = req;
-    res.render("search", { pageTitle: "Search", searchingBy });
+    let videos = [];
+    try {
+        videos = await Video.find({ title: { $regex: searchingBy, $options: "i" } }); //내가 찾는 단어가 포함된 모든것 찾을때
+    } catch (error) {
+        console.log(error);
+    }
+    res.render("search", { pageTitle: "Search", searchingBy, videos });
+
 }
 
 export const getUpload = (req, res) => res.render("upload", { pageTitle: "upload" });
