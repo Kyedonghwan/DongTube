@@ -35,7 +35,7 @@
     "webpack-cli": "^4.1.0"
   },
   "scripts": {
-    "dev:server": "nodemon --exec babel-node init.js --delay 2s",
+    "dev:server": "nodemon --exec babel-node init.js --delay 2s --ignore 'scss'",
     "dev:assets": "WEBPACK_ENV=development webpack",
     "build:assets": "WEBPACK_ENV=production webpack"
   },
