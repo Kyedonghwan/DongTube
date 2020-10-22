@@ -8,6 +8,7 @@ const OUTPUT_DIR = path.join(__dirname, "static");
 
 
 const config = {
+    devtool: "cheap-module-source-map",
     entry: ["@babel/polyfill", ENTRY_FILE],
     mode: MODE,
     module: {

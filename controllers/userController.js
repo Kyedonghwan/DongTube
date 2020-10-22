@@ -75,7 +75,7 @@ export const getMe = (req, res) => {
 export const userDetail = async (req, res) => {
     const { params: { id } } = req;
     try {
-        const user = await User.findById(id);
+        const user = await (await User.findById(id)).populated('videos');
         res.render("userDetail", { pageTitle: `${user.name}-User Detail`, user });
     } catch (error) {
         res.redirect(routes.home);
