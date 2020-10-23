@@ -1,4 +1,5 @@
 mixin commentBlock(comment={})
-    li
+    li(id=comment.id)
         span=comment.text
-        button.jsDeleteBtn ❌
+        if loggedUser && (comment.creator==loggedUser.id)
+            button.jsDeleteBtn ❌

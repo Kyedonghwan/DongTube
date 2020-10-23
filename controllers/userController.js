@@ -68,16 +68,17 @@ export const logout = (req, res) => {
 };
 
 export const getMe = (req, res) => {
-    res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+    res.render("userDetail_me", { pageTitle: "User Detail", user: req.user });
 
 };
 
 export const userDetail = async (req, res) => {
     const { params: { id } } = req;
     try {
-        const user = await (await User.findById(id)).populated('videos');
-        res.render("userDetail", { pageTitle: `${user.name}-User Detail`, user });
+        const user = await User.findById(id).populate('videos');
+        res.render("userDetail", { pageTitle: `${user.name} -User Detail`, user });
     } catch (error) {
+        console.log(error);
         res.redirect(routes.home);
     }
 }
