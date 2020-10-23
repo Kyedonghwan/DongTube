@@ -1,3 +1,6 @@
+import axios from "axios";
+
+
 const videoContainer = document.getElementById("jsVideoPlayer");
 const videoPlayer = document.querySelector("#jsVideoPlayer video");
 const playBtn = document.getElementById("jsPlayButton");
@@ -5,7 +8,30 @@ const volumeBtn = document.getElementById("jsVolumeBtn");
 const fullScreenBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("jsCurrentTime");
 const totalTime = document.getElementById("jsTotalTime");
+const volumeRange = document.getElementById("jsVolume");
 
+const registerView = () => {
+    const videoId = window.location.href.split("/videos/")[1];
+    console.log(videoId);
+    fetch(`/api/${videoId}/view`, {
+        method: "POST"
+    });
+}
+
+
+function handleDrag(event) {
+    const { target: { value } } = event;
+    videoPlayer.volume = value;
+    if (value >= 0.7) {
+        volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    } else if (value >= 0.4) {
+        volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+    } else if (value >= 0.1) {
+        volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>';
+    } else {
+        volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+    }
+}
 
 function exitFullScreen() {
     fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
@@ -50,9 +76,11 @@ function handlePlayClick() {
 function handleVolumeClick() {
 
     if (videoPlayer.muted) {
+        volumeRange.value = videoPlayer.volume;
         videoPlayer.muted = false;
         volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>'
     } else {
+        volumeRange.value = 0;
         videoPlayer.muted = true;
         volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'
     }
@@ -91,12 +119,14 @@ function handleEnded() {
 }
 
 function init() {
+    registerView();
+    videoPlayer.volume = 0.5;
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
     videoPlayer.addEventListener("loadedmetadata", setTotalTime);
     videoPlayer.addEventListener("ended", handleEnded);
-
+    volumeRange.addEventListener("input", handleDrag);
 
     //비디오가 완전히 로드 되고 나서 전체 시간을 가져옴.
 }
