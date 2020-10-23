@@ -105,16 +105,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var addCommentForm = document.getElementById("jsAddComment");
 var commentList = document.getElementById("jsCommentList");
 var commentNumber = document.getElementById("jsCommentNumber");
+var deleteBtn = document.querySelectorAll(".jsDeleteBtn");
 
 var increaseNumber = function increaseNumber() {
   commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
 };
 
-var addComment = function addComment(comment) {
+var decreaseNumber = function decreaseNumber() {
+  commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) - 1;
+};
+
+var addComment = function addComment(comment, newCommentId) {
   var li = document.createElement("li");
   var span = document.createElement("span");
+  var deleteBtn = document.createElement("button");
+  li.id = newCommentId;
+  deleteBtn.innerHTML = "❌";
+  deleteBtn.addEventListener("click", handleDelete);
   span.innerHTML = comment;
   li.appendChild(span);
+  li.appendChild(deleteBtn);
   commentList.prepend(li);
   increaseNumber();
 };
@@ -125,7 +135,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(comment) {
-    var videoId, response;
+    var videoId, response, newCommentId;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -142,12 +152,13 @@ function () {
 
           case 3:
             response = _context.sent;
+            newCommentId = response.data.newCommentId;
 
             if (response.status === 200) {
-              addComment(comment);
+              addComment(comment, newCommentId);
             }
 
-          case 5:
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -168,8 +179,59 @@ var handleSubmit = function handleSubmit(event) {
   commentInput.value = "";
 };
 
+var deleteComment =
+/*#__PURE__*/
+function () {
+  var _ref2 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(deleteCommentId, li) {
+    var videoId, response;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            videoId = window.location.href.split("/videos/")[1];
+            _context2.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_0___default()({
+              url: "/api/".concat(videoId, "/del-comment"),
+              method: "POST",
+              data: {
+                deleteCommentId: deleteCommentId
+              }
+            });
+
+          case 3:
+            response = _context2.sent;
+
+            if (response.status === 200) {
+              commentList.removeChild(li);
+              decreaseNumber();
+            }
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function deleteComment(_x2, _x3) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var handleDelete = function handleDelete(event) {
+  var li = event.target.parentNode;
+  var deleteCommentId = li.id;
+  deleteComment(deleteCommentId, li);
+};
+
 function init() {
   addCommentForm.addEventListener("submit", handleSubmit);
+  deleteBtn.forEach(function (btn) {
+    btn.addEventListener("click", handleDelete);
+  });
 }
 
 if (addCommentForm) {
