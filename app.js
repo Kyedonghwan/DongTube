@@ -20,7 +20,7 @@ const app = express();
 const CokieStore = MongoStore(session);
 
 app.set('view engine', "pug");
-//원하는 만큼 middleware를 선언 middelware 처리 후, route로 
+//원하는 만큼 middleware를 선언 middelware 처리 후, route
 app.use("/uploads", express.static("uploads"));
 //upload라는 directory로 감 
 app.use("/static", express.static("static"));
